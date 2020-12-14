@@ -115,9 +115,9 @@ class ProductsController extends Controller
      *              @OA\Property(property="image", type="string", example=""),
      *          ),
      *      ),
-     *      @OA\Response( response=200, description="Update Product" ),
-     *      @OA\Response(response=400, description="Bad request"),
-     *      @OA\Response(response=404, description="Resource Not Found"),
+     *     @OA\Response( response=200, description="Update Product" ),
+     *     @OA\Response(response=400, description="Bad request"),
+     *     @OA\Response(response=404, description="Resource Not Found"),
      * )
      */
     public function update(ProductRequest $request, $id)
@@ -134,13 +134,28 @@ class ProductsController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @OA\DELETE(
+     *     path="/api/products/{id}",
+     *     tags={"Products"},
+     *     summary="Delete Product",
+     *     description="Delete Product",
+     *     @OA\Parameter(name="id", description="id, eg; 1", required=true, in="path", @OA\Schema(type="integer")),
+     *     @OA\Response( response=200, description="Delete Product" ),
+     *     @OA\Response(response=400, description="Bad request"),
+     *     @OA\Response(response=404, description="Resource Not Found"),
+     * )
      */
     public function destroy($id)
     {
-        //
+        try {
+            $produtData =  $this->productRepository->getByID($id);
+            $deleted = $this->productRepository->delete($id);
+            if(!$deleted)
+                return $this->responseRepository->ResponseError(null, 'Product Not Found', Response::HTTP_NOT_FOUND);
+
+            return $this->responseRepository->ResponseSuccess($produtData, 'Product Deleted Successfully !');
+        } catch (\Exception $e) {
+            return $this->responseRepository->ResponseError(null, $e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
     }
 }
