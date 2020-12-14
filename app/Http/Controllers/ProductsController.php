@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Http\Requests\ProductRequest;
 
 use App\Repositories\ProductRepository;
 use App\Repositories\ResponseRepository;
@@ -43,14 +44,34 @@ class ProductsController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @OA\POST(
+     *     path="/api/products",
+     *     tags={"Products"},
+     *     summary="Create New Product",
+     *     description="Create New Product",
+     *     @OA\RequestBody(
+     *          @OA\JsonContent(
+     *              type="object",
+     *              @OA\Property(property="title", type="string", example="Product 1"),
+     *              @OA\Property(property="description", type="string", example="Description"),
+     *              @OA\Property(property="price", type="integer", example=10120),
+     *              @OA\Property(property="image", type="string", example=""),
+     *          ),
+     *      ),
+     *      @OA\Response( response=200, description="Create New Product" ),
+     *      @OA\Response(response=400, description="Bad request"),
+     *      @OA\Response(response=404, description="Resource Not Found"),
+     * )
      */
-    public function store(Request $request)
+    public function store(ProductRequest $request)
     {
-        //
+        try {
+            $data = $request->all();
+            $unit = $this->productRepository->create($data);
+            return $this->responseRepository->ResponseSuccess($unit, 'New Product Created Successfully !');
+        } catch (\Exception $exception) {
+            return $this->responseRepository->ResponseError(null, $exception->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
     }
 
     /**
