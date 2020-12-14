@@ -58,7 +58,7 @@ class ProductsController extends Controller
      *              @OA\Property(property="image", type="string", example=""),
      *          ),
      *      ),
-     *      @OA\Response( response=200, description="Create New Product" ),
+     *      @OA\Response(response=200, description="Create New Product" ),
      *      @OA\Response(response=400, description="Bad request"),
      *      @OA\Response(response=404, description="Resource Not Found"),
      * )
@@ -75,26 +75,62 @@ class ProductsController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @OA\GET(
+     *     path="/api/products/{id}",
+     *     tags={"Products"},
+     *     summary="Show Product Details",
+     *     description="Show Product Details",
+     *     @OA\Parameter(name="id", description="id, eg; 1", required=true, in="path", @OA\Schema(type="integer")),
+     *     @OA\Response(response=200, description="Show Product Details" ),
+     *     @OA\Response(response=400, description="Bad request"),
+     *     @OA\Response(response=404, description="Resource Not Found"),
+     * )
      */
     public function show($id)
     {
-        //
+        try {
+            $data = $this->productRepository->getByID($id);
+            if(is_null($data))
+                return $this->responseRepository->ResponseError(null, 'Product Not Found', Response::HTTP_NOT_FOUND);
+
+            return $this->responseRepository->ResponseSuccess($data, 'Product Details Fetch Successfully !');
+        } catch (\Exception $e) {
+            return $this->responseRepository->ResponseError(null, $e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
     }
 
     /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @OA\PUT(
+     *     path="/api/products/{id}",
+     *     tags={"Products"},
+     *     summary="Update Product",
+     *     description="Update Product",
+     *     @OA\Parameter(name="id", description="id, eg; 1", required=true, in="path", @OA\Schema(type="integer")),
+     *     @OA\RequestBody(
+     *          @OA\JsonContent(
+     *              type="object",
+     *              @OA\Property(property="title", type="string", example="Product 1"),
+     *              @OA\Property(property="description", type="string", example="Description"),
+     *              @OA\Property(property="price", type="integer", example=10120),
+     *              @OA\Property(property="image", type="string", example=""),
+     *          ),
+     *      ),
+     *      @OA\Response( response=200, description="Update Product" ),
+     *      @OA\Response(response=400, description="Bad request"),
+     *      @OA\Response(response=404, description="Resource Not Found"),
+     * )
      */
-    public function update(Request $request, $id)
+    public function update(ProductRequest $request, $id)
     {
-        //
+        try {
+            $data = $this->productRepository->update($id, $request->all());
+            if(is_null($data))
+                return $this->responseRepository->ResponseError(null, 'Product Not Found', Response::HTTP_NOT_FOUND);
+
+            return $this->responseRepository->ResponseSuccess($data, 'Product Updated Successfully !');
+        } catch (\Exception $e) {
+            return $this->responseRepository->ResponseError(null, $e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
     }
 
     /**
