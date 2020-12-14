@@ -1,5 +1,7 @@
 <?php
 
+namespace App\Repositories;
+
 use App\Interfaces\CrudInterface;
 use App\Models\Product;
 
