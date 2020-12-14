@@ -13,10 +13,10 @@ class ProductRequest extends FormRequest
     public function rules()
     {
         return [
-            'title' => 'required',
-            'description' => 'nullable',
-            'price' => 'required',
-            'image' => 'nullable',
+            'title' => 'required|max:255',
+            'description' => 'nullable|max:5000',
+            'price' => 'required|numeric',
+            'image' => 'nullable|image|max:255',
         ];
     }
 
@@ -38,7 +38,12 @@ class ProductRequest extends FormRequest
     {
         return [
             'title.required' => 'Please give product title',
+            'title.max' => 'Please give product title maximum of 255 characters',
+            'description.max' => 'Please give product description maximum of 5000 characters',
             'price.required' => 'Please give product price',
+            'price.numeric' => 'Please give a numeric product price',
+            'image.image' => 'Please give a valid product image',
+            'image.max' => 'Product image path size exceeded',
         ];
     }
 }
