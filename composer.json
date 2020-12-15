@@ -15,6 +15,7 @@
         "guzzlehttp/guzzle": "^7.0.1",
         "laravel/framework": "^8.12",
         "laravel/tinker": "^2.5",
+        "tymon/jwt-auth": "^1.0",
         "zircote/swagger-php": "^3.1"
     },
     "require-dev": {

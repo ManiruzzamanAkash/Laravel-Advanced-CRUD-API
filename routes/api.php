@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\ProductsController;
+use App\Http\Controllers\Products\ProductsController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
