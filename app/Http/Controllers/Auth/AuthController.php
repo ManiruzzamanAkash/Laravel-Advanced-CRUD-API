@@ -62,9 +62,10 @@ class AuthController extends Controller
      * @OA\GET(
      *     path="/api/auth/me",
      *     tags={"Authentication"},
-     *     summary="Login Profile",
-     *     description="Login Profile",
-     *     @OA\Response(response=200, description="Login Profile" ),
+     *     summary="Authenticated User Profile",
+     *     description="Authenticated User Profile",
+     *     security={{"bearer": {}}},
+     *     @OA\Response(response=200, description="Authenticated User Profile" ),
      *     @OA\Response(response=400, description="Bad request"),
      *     @OA\Response(response=404, description="Resource Not Found"),
      * )

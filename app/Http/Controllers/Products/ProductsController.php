@@ -28,6 +28,7 @@ class ProductsController extends Controller
      *     tags={"Products"},
      *     summary="Get Product List",
      *     description="Get Product List as Array",
+     *     security={{"bearer": {}}},
      *     operationId="index",
      *     @OA\Response(response=200,description="Get Product List as Array"),
      *     @OA\Response(response=400, description="Bad request"),
