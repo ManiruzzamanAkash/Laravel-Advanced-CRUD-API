@@ -62,4 +62,16 @@ class User extends Authenticatable implements JWTSubject
     {
         return [];
     }
+
+    /**
+     * Products
+     * 
+     * Get All products uploaded by user
+     *
+     * @return array Products
+     */
+    public function products()
+    {
+        return $this->hasMany(Product::class)->orderBy('id', 'desc');
+    }
 }

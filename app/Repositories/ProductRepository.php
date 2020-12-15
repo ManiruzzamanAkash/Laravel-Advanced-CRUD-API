@@ -6,6 +6,7 @@ use Illuminate\Support\Str;
 use App\Helpers\UploadHelper;
 use App\Interfaces\CrudInterface;
 use App\Models\Product;
+use Illuminate\Support\Facades\Auth;
 
 class ProductRepository implements CrudInterface{
 
@@ -15,7 +16,8 @@ class ProductRepository implements CrudInterface{
      * @return collections Array of Product Collection
      */
     public function getAll(){
-        return Product::orderBy('id', 'desc')->get();
+        $user = Auth::guard()->user();
+        return $user->products;
     }
 
     /**
@@ -66,7 +68,7 @@ class ProductRepository implements CrudInterface{
      * @return void
      */
     public function getByID($id){
-        return Product::find($id);
+        return Product::with('user')->find($id);
     }
 
     /**

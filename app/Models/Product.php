@@ -15,4 +15,16 @@ class Product extends Model
         'image',
         'user_id'
     ];
+
+    /**
+     * User
+     * 
+     * Get User Uploaded By Product
+     *
+     * @return array Products
+     */
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }
