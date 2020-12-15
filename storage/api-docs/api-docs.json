@@ -134,12 +134,7 @@
                     "404": {
                         "description": "Resource Not Found"
                     }
-                },
-                "security": [
-                    {
-                        "bearer": []
-                    }
-                ]
+                }
             },
             "post": {
                 "tags": [
@@ -147,7 +142,7 @@
                 ],
                 "summary": "Create New Product",
                 "description": "Create New Product",
-                "operationId": "App\\Http\\Controllers\\Products\\ProductsController::store",
+                "operationId": "store",
                 "requestBody": {
                     "content": {
                         "application/json": {
@@ -188,6 +183,38 @@
                 }
             }
         },
+        "/api/products/view/all": {
+            "get": {
+                "tags": [
+                    "Products"
+                ],
+                "summary": "All Products - Publicly Accessable",
+                "description": "All Products - Publicly Accessable",
+                "operationId": "indexAll",
+                "parameters": [
+                    {
+                        "name": "perPage",
+                        "in": "query",
+                        "description": "perPage, eg; 20",
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "example": 20
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "All Products - Publicly Accessable"
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "404": {
+                        "description": "Resource Not Found"
+                    }
+                }
+            }
+        },
         "/api/products/{id}": {
             "get": {
                 "tags": [
@@ -195,7 +222,7 @@
                 ],
                 "summary": "Show Product Details",
                 "description": "Show Product Details",
-                "operationId": "App\\Http\\Controllers\\Products\\ProductsController::show",
+                "operationId": "show",
                 "parameters": [
                     {
                         "name": "id",
@@ -225,7 +252,7 @@
                 ],
                 "summary": "Update Product",
                 "description": "Update Product",
-                "operationId": "App\\Http\\Controllers\\Products\\ProductsController::update",
+                "operationId": "update",
                 "parameters": [
                     {
                         "name": "id",
@@ -282,7 +309,7 @@
                 ],
                 "summary": "Delete Product",
                 "description": "Delete Product",
-                "operationId": "App\\Http\\Controllers\\Products\\ProductsController::destroy",
+                "operationId": "destroy",
                 "parameters": [
                     {
                         "name": "id",
@@ -320,6 +347,12 @@
     },
     "components": {
         "securitySchemes": {
+            "Bearer": {
+                "type": "apiKey",
+                "description": "JWT",
+                "name": "Authorization",
+                "in": "header"
+            },
             "api_key": {
                 "type": "apiKey",
                 "name": "Authorization",

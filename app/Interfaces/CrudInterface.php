@@ -15,7 +15,7 @@ interface CrudInterface {
      * @param int   Page No
      * @return array Paginated Data
      */
-    public function getPaginatedData($pageNo);
+    public function getPaginatedData(int $perPage);
 
     /**
      * Create New Item

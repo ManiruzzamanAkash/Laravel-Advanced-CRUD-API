@@ -34,6 +34,7 @@ Route::group([
      * Products Module
      */
     Route::resource('products', ProductsController::class);
+    Route::get('products/view/all', [ProductsController::class, 'indexAll']);
 
 });
 

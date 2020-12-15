@@ -17,7 +17,7 @@ class ProductsController extends Controller
 
     public function __construct(ProductRepository $productRepository, ResponseRepository $rp)
     {
-        $this->middleware('auth:api');
+        $this->middleware('auth:api', ['except' => ['indexAll']]);
         $this->productRepository = $productRepository;
         $this->responseRepository = $rp;
     }
@@ -28,7 +28,6 @@ class ProductsController extends Controller
      *     tags={"Products"},
      *     summary="Get Product List",
      *     description="Get Product List as Array",
-     *     security={{"bearer": {}}},
      *     operationId="index",
      *     @OA\Response(response=200,description="Get Product List as Array"),
      *     @OA\Response(response=400, description="Bad request"),
@@ -45,12 +44,37 @@ class ProductsController extends Controller
         }
     }
 
+    
+    /**
+     * @OA\GET(
+     *     path="/api/products/view/all",
+     *     tags={"Products"},
+     *     summary="All Products - Publicly Accessable",
+     *     description="All Products - Publicly Accessable",
+     *     operationId="indexAll",
+     *     @OA\Parameter(name="perPage", description="perPage, eg; 20", example=20, in="query", @OA\Schema(type="integer")),
+     *     @OA\Response(response=200, description="All Products - Publicly Accessable" ),
+     *     @OA\Response(response=400, description="Bad request"),
+     *     @OA\Response(response=404, description="Resource Not Found"),
+     * )
+     */
+    public function indexAll(Request $request)
+    {
+        try {
+            $data = $this->productRepository->getPaginatedData($request->perPage);
+            return $this->responseRepository->ResponseSuccess($data, 'Product List Fetched Successfully !');
+        } catch (\Exception $e) {
+            return $this->responseRepository->ResponseError(null, $e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
     /**
      * @OA\POST(
      *     path="/api/products",
      *     tags={"Products"},
      *     summary="Create New Product",
      *     description="Create New Product",
+     *     operationId="store",
      *     @OA\RequestBody(
      *          @OA\JsonContent(
      *              type="object",
@@ -82,6 +106,7 @@ class ProductsController extends Controller
      *     tags={"Products"},
      *     summary="Show Product Details",
      *     description="Show Product Details",
+     *     operationId="show",
      *     @OA\Parameter(name="id", description="id, eg; 1", required=true, in="path", @OA\Schema(type="integer")),
      *     @OA\Response(response=200, description="Show Product Details" ),
      *     @OA\Response(response=400, description="Bad request"),
@@ -117,6 +142,7 @@ class ProductsController extends Controller
      *              @OA\Property(property="image", type="string", example=""),
      *          ),
      *      ),
+     *     operationId="update",
      *     @OA\Response( response=200, description="Update Product" ),
      *     @OA\Response(response=400, description="Bad request"),
      *     @OA\Response(response=404, description="Resource Not Found"),
@@ -141,6 +167,7 @@ class ProductsController extends Controller
      *     tags={"Products"},
      *     summary="Delete Product",
      *     description="Delete Product",
+     *     operationId="destroy",
      *     @OA\Parameter(name="id", description="id, eg; 1", required=true, in="path", @OA\Schema(type="integer")),
      *     @OA\Response( response=200, description="Delete Product" ),
      *     @OA\Response(response=400, description="Bad request"),
