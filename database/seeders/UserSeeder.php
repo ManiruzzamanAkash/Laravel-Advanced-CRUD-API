@@ -22,5 +22,8 @@ class UserSeeder extends Seeder
             'password' => Hash::make('123456')
         ];
         User::create($data);
+
+        // Testing Dummy User
+        User::factory(20)->create();
     }
 }
