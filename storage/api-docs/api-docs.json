@@ -71,12 +71,7 @@
                     "404": {
                         "description": "Resource Not Found"
                     }
-                },
-                "security": [
-                    {
-                        "bearer": []
-                    }
-                ]
+                }
             }
         },
         "/api/auth/logout": {
@@ -332,14 +327,7 @@
             }
         }
     },
-    "security": {
-        "bearer": {
-            "type": "http",
-            "description": "Authorization token obtained from logging in.",
-            "name": "Authorization",
-            "in": "header",
-            "scheme": "bearer",
-            "bearerFormat": "JWT"
-        }
-    }
+    "security": [
+        []
+    ]
 }

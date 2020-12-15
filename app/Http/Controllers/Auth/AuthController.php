@@ -38,7 +38,10 @@ class AuthController extends Controller
      *      ),
      *      @OA\Response(response=200, description="Login" ),
      *      @OA\Response(response=400, description="Bad request"),
-     *      @OA\Response(response=404, description="Resource Not Found"),
+     *      @OA\Response(response=404, description="Resource Not Found")
+     * )
+     * @OA\SecurityScheme(
+     *   securityScheme="Bearer",type="apiKey",description="JWT",name="Authorization",in="header",
      * )
      */
     public function login(Request $request)
@@ -64,7 +67,6 @@ class AuthController extends Controller
      *     tags={"Authentication"},
      *     summary="Authenticated User Profile",
      *     description="Authenticated User Profile",
-     *     security={{"bearer": {}}},
      *     @OA\Response(response=200, description="Authenticated User Profile" ),
      *     @OA\Response(response=400, description="Bad request"),
      *     @OA\Response(response=404, description="Resource Not Found"),
