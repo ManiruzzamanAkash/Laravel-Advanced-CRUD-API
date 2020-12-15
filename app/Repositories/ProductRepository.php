@@ -52,11 +52,10 @@ class ProductRepository implements CrudInterface{
      */
     public function delete($id){
         $product = Product::find($id);
-        $data['image'] = UploadHelper::deleteFile('images/products/'.$product->image);        
-        
         if (is_null($product))
             return false;
 
+        UploadHelper::deleteFile('images/products/'.$product->image);
         $product->delete($product);
         return true;
     }
@@ -88,6 +87,6 @@ class ProductRepository implements CrudInterface{
             return null;
 
         $product->update($data);
-        return $product;
+        return $this->getByID($product->id);
     }
 }

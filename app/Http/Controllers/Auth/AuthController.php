@@ -136,7 +136,7 @@ class AuthController extends Controller
         $data = [[
             'access_token' => $token,
             'token_type' => 'bearer',
-            'expires_in' => $this->guard()->factory()->getTTL() * 60,
+            'expires_in' => $this->guard()->factory()->getTTL() * 60 * 24 * 30, // 43200 Minutes = 30 Days
             'user' => $this->guard()->user()
         ]];
         return $data[0];
