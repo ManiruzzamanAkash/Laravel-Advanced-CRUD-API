@@ -2,6 +2,8 @@
 
 namespace App\Repositories;
 
+use Illuminate\Support\Str;
+use App\Helpers\UploadHelper;
 use App\Interfaces\CrudInterface;
 use App\Models\Product;
 
@@ -33,6 +35,8 @@ class ProductRepository implements CrudInterface{
      * @return object Product Object
      */
     public function create(array $data){
+        $titleShort = Str::slug(substr($data['title'], 0, 20));
+        $data['image'] = UploadHelper::upload('image', $data['image'], $titleShort.'-'. time(), 'images/products');        
         $product = Product::create($data);
         return $product;
     }
@@ -45,6 +49,8 @@ class ProductRepository implements CrudInterface{
      */
     public function delete($id){
         $product = Product::find($id);
+        $data['image'] = UploadHelper::deleteFile('images/products/'.$product->image);        
+        
         if (is_null($product))
             return false;
 
@@ -69,8 +75,12 @@ class ProductRepository implements CrudInterface{
      * @param array $data
      * @return object Updated Product Object
      */
-    public function update($id,array $data){
+    public function update($id, array $data){
         $product = Product::find($id);
+        if(isset($data['image'])){
+            $titleShort = Str::slug(substr($data['title'], 0, 20));
+            $data['image'] = UploadHelper::update('image', $data['image'], $titleShort.'-'. time(), 'images/products', $product->image);           
+        }
         if (is_null($product))
             return null;
 

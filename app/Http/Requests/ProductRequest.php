@@ -16,7 +16,7 @@ class ProductRequest extends FormRequest
             'title' => 'required|max:255',
             'description' => 'nullable|max:5000',
             'price' => 'required|numeric',
-            'image' => 'nullable|image|max:255',
+            'image' => 'nullable|image|mimes:png,jpg,jpeg,gif|max:2048',
         ];
     }
 
@@ -43,7 +43,7 @@ class ProductRequest extends FormRequest
             'price.required' => 'Please give product price',
             'price.numeric' => 'Please give a numeric product price',
             'image.image' => 'Please give a valid product image',
-            'image.max' => 'Product image path size exceeded',
+            'image.max' => 'Product image max 2MB is allowed',
         ];
     }
 }
