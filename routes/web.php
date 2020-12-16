@@ -1,5 +1,8 @@
 <?php
 
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Welcome\WelcomeController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -11,3 +14,4 @@
 |
 */
 
+Route::get('/', [WelcomeController::class, 'welcome']);
