@@ -5,22 +5,28 @@ namespace App\Http\Controllers\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\LoginRequest;
+use App\Http\Requests\RegisterRequest;
+use App\Models\User;
+use App\Repositories\AuthRepository;
 use App\Repositories\ResponseRepository;
 use Illuminate\Http\Response;
 
 class AuthController extends Controller
 {
     public $responseRepository;
+    public $authRepository;
 
     /**
      * Create a new AuthController instance.
      *
      * @return void
      */
-    public function __construct( ResponseRepository $rp)
+    public function __construct( ResponseRepository $rr, AuthRepository $ar)
     {
-        $this->middleware('auth:api', ['except' => ['login']]);
-        $this->responseRepository = $rp;
+        $this->middleware('auth:api', ['except' => ['login', 'register']]);
+        $this->responseRepository = $rr;
+        $this->authRepository = $ar;
     }
 
     /**
@@ -44,7 +50,7 @@ class AuthController extends Controller
      *   securityScheme="Bearer",type="apiKey",description="JWT",name="Authorization",in="header",
      * )
      */
-    public function login(Request $request)
+    public function login(LoginRequest $request)
     {
         try {
             $credentials = $request->only('email', 'password');
@@ -56,6 +62,42 @@ class AuthController extends Controller
             }
 
             return $this->responseRepository->ResponseSuccess($data, 'Logged In Successfully !');
+        } catch (\Exception $e) {
+            return $this->responseRepository->ResponseError(null, $e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    /**
+     * @OA\POST(
+     *     path="/api/auth/register",
+     *     tags={"Authentication"},
+     *     summary="Register User",
+     *     description="Register New User",
+     *     @OA\RequestBody(
+     *          @OA\JsonContent(
+     *              type="object",
+     *              @OA\Property(property="name", type="string", example="Jhon Doe"),
+     *              @OA\Property(property="email", type="string", example="jhondoe@example.com"),
+     *              @OA\Property(property="password", type="string", example="123456"),
+     *              @OA\Property(property="password_confirmation", type="string", example="123456")
+     *          ),
+     *      ),
+     *      @OA\Response(response=200, description="Register New User Data" ),
+     *      @OA\Response(response=400, description="Bad request"),
+     *      @OA\Response(response=404, description="Resource Not Found")
+     * )
+     */
+    public function register(RegisterRequest $request)
+    {
+        try {
+            $requestData = $request->only('name', 'email', 'password', 'password_confirmation');
+            $user = $this->authRepository->register($requestData);
+            if($user){
+                if ($token = $this->guard()->attempt($requestData)) {
+                    $data =  $this->respondWithToken($token);
+                    return $this->responseRepository->ResponseSuccess($data, 'User Registered and Logged in Successfully', Response::HTTP_OK);
+                }
+            }
         } catch (\Exception $e) {
             return $this->responseRepository->ResponseError(null, $e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
         }
