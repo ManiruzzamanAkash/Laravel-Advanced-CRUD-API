@@ -15,6 +15,7 @@ Basic Laravel CRUD API application included with Authentication Module & Product
 
 ### API List:
 ##### Authentication Module
+1. [x] Register User API with Token
 1. [x] Login API with Token
 1. [x] Authenticated User Profile
 1. [x] Refresh Data
