@@ -58,7 +58,7 @@ class AuthController extends Controller
             if ($token = $this->guard()->attempt($credentials)) {
                 $data =  $this->respondWithToken($token);
             }else{
-                return $this->responseRepository->ResponseError(null, 'Un Authorized to login', Response::HTTP_UNAUTHORIZED);
+                return $this->responseRepository->ResponseError(null, 'Invalid Email and Password !', Response::HTTP_UNAUTHORIZED);
             }
 
             return $this->responseRepository->ResponseSuccess($data, 'Logged In Successfully !');
