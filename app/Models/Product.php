@@ -15,7 +15,6 @@ class Product extends Model
         'image',
         'user_id'
     ];
-    protected $appends = ['image_url'];
 
 
     /**
@@ -30,6 +29,8 @@ class Product extends Model
         return $this->belongsTo(User::class);
     }
 
+    // Add New Attribute to get image address
+    protected $appends = ['image_url'];
     public function  getImageUrlAttribute(){
         return url('')."/images/products/".$this->image;
     }
