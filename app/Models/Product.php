@@ -32,6 +32,8 @@ class Product extends Model
     // Add New Attribute to get image address
     protected $appends = ['image_url'];
     public function  getImageUrlAttribute(){
+        if(is_null($this->image) || $this->image === "")
+            return null;
         return url('')."/images/products/".$this->image;
     }
 }
