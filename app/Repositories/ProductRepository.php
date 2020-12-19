@@ -17,7 +17,9 @@ class ProductRepository implements CrudInterface{
      */
     public function getAll(){
         $user = Auth::guard()->user();
-        return $user->products;
+        return $user->products()->orderBy('id', 'desc')
+        ->with('user')
+        ->paginate(12);
     }
 
     /**
