@@ -99,9 +99,11 @@ class ProductRepository implements CrudInterface{
      */
     public function update($id, array $data){
         $product = Product::find($id);
-        if(isset($data['image'])){
+        if($data['image'] != null && $data['image'] != ''){
             $titleShort = Str::slug(substr($data['title'], 0, 20));
             $data['image'] = UploadHelper::update('image', $data['image'], $titleShort.'-'. time(), 'images/products', $product->image);           
+        }else{
+            $data['image'] = $product->image;
         }
         if (is_null($product))
             return null;
