@@ -17,9 +17,10 @@ class ProductRepository implements CrudInterface{
      */
     public function getAll(){
         $user = Auth::guard()->user();
-        return $user->products()->orderBy('id', 'desc')
+        return $user->products()
+        ->orderBy('id', 'desc')
         ->with('user')
-        ->paginate(12);
+        ->paginate(10);
     }
 
     /**
@@ -29,7 +30,7 @@ class ProductRepository implements CrudInterface{
      * @return collections Array of Product Collection
      */
     public function getPaginatedData($perPage){
-        $perPage = isset($perPage) ? $perPage : 10;
+        $perPage = isset($perPage) ? $perPage : 12;
         return Product::orderBy('id', 'desc')
         ->with('user')
         ->paginate($perPage);
