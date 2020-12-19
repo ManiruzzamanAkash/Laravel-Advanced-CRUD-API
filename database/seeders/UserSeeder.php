@@ -19,7 +19,7 @@ class UserSeeder extends Seeder
         DB::table('users')->delete();
         $data = [
             'name' => 'Maniruzzaman Akash',
-            'email' => 'manirujjamanakash@gmail.com',
+            'email' => 'admin@example.com',
             'password' => Hash::make('123456')
         ];
         User::create($data);
