@@ -67,6 +67,30 @@ class ProductsController extends Controller
             return $this->responseRepository->ResponseError(null, $e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
+    
+    /**
+     * @OA\GET(
+     *     path="/api/products/view/search",
+     *     tags={"Products"},
+     *     summary="All Products - Publicly Accessable",
+     *     description="All Products - Publicly Accessable",
+     *     operationId="search",
+     *     @OA\Parameter(name="perPage", description="perPage, eg; 20", example=20, in="query", @OA\Schema(type="integer")),
+     *     @OA\Parameter(name="search", description="search, eg; Test", example="Test", in="query", @OA\Schema(type="string")),
+     *     @OA\Response(response=200, description="All Products - Publicly Accessable" ),
+     *     @OA\Response(response=400, description="Bad request"),
+     *     @OA\Response(response=404, description="Resource Not Found"),
+     * )
+     */
+    public function search(Request $request)
+    {
+        try {
+            $data = $this->productRepository->searchProduct($request->search, $request->perPage);
+            return $this->responseRepository->ResponseSuccess($data, 'Product List Fetched Successfully !');
+        } catch (\Exception $e) {
+            return $this->responseRepository->ResponseError(null, $e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
 
     /**
      * @OA\POST(

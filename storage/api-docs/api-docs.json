@@ -263,6 +263,47 @@
                 }
             }
         },
+        "/api/products/view/search": {
+            "get": {
+                "tags": [
+                    "Products"
+                ],
+                "summary": "All Products - Publicly Accessable",
+                "description": "All Products - Publicly Accessable",
+                "operationId": "search",
+                "parameters": [
+                    {
+                        "name": "perPage",
+                        "in": "query",
+                        "description": "perPage, eg; 20",
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "example": 20
+                    },
+                    {
+                        "name": "search",
+                        "in": "query",
+                        "description": "search, eg; Test",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "Test"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "All Products - Publicly Accessable"
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "404": {
+                        "description": "Resource Not Found"
+                    }
+                }
+            }
+        },
         "/api/products/{id}": {
             "get": {
                 "tags": [

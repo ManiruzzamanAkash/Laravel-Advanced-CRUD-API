@@ -27,8 +27,26 @@ class ProductRepository implements CrudInterface{
      * @return collections Array of Product Collection
      */
     public function getPaginatedData($perPage){
-        $perPage = isset($perPage) ? $perPage : 20;
-        return Product::orderBy('id', 'desc')->paginate($perPage);
+        $perPage = isset($perPage) ? $perPage : 10;
+        return Product::orderBy('id', 'desc')
+        ->with('user')
+        ->paginate($perPage);
+    }
+
+    /**
+     * Get Searchable Product Data with Pagination
+     *
+     * @param int $pageNo
+     * @return collections Array of Product Collection
+     */
+    public function searchProduct($keyword, $perPage){
+        $perPage = isset($perPage) ? $perPage : 10;
+        return Product::where('title', 'like', '%'.$keyword.'%')
+        ->orWhere('description', 'like', '%'.$keyword.'%')
+        ->orWhere('price', 'like', '%'.$keyword.'%')
+        ->orderBy('id', 'desc')
+        ->with('user')
+        ->paginate($perPage);
     }
     
     /**

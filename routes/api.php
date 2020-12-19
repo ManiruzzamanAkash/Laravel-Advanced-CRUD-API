@@ -36,6 +36,7 @@ Route::group([
      */
     Route::resource('products', ProductsController::class);
     Route::get('products/view/all', [ProductsController::class, 'indexAll']);
+    Route::get('products/view/search', [ProductsController::class, 'search']);
 
 });
 
