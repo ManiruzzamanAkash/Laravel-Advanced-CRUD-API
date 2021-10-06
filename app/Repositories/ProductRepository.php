@@ -62,7 +62,9 @@ class ProductRepository implements CrudInterface{
         $titleShort = Str::slug(substr($data['title'], 0, 20));
         $user = Auth::guard()->user();
         $data['user_id'] =  $user->id;       
-        $data['image'] = UploadHelper::upload('image', $data['image'], $titleShort.'-'. time(), 'images/products');        
+        if (!empty($data['image'])) {
+            $data['image'] = UploadHelper::upload('image', $data['image'], $titleShort.'-'. time(), 'images/products');  
+        }      
         $product = Product::create($data);
         return $product;
     }
@@ -102,7 +104,7 @@ class ProductRepository implements CrudInterface{
      */
     public function update($id, array $data){
         $product = Product::find($id);
-        if($data['image'] != null && $data['image'] != ''){
+        if(!empty($data['image'])){
             $titleShort = Str::slug(substr($data['title'], 0, 20));
             $data['image'] = UploadHelper::update('image', $data['image'], $titleShort.'-'. time(), 'images/products', $product->image);           
         }else{
