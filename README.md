@@ -16,6 +16,7 @@ Basic Laravel CRUD API application included with Authentication Module & Product
 1. Model Based Eloquent Query
 1. Swagger API Documentation - https://github.com/DarkaOnLine/L5-Swagger
 1. JWT Auth - https://github.com/tymondesigns/jwt-auth
+1. PHP Unit Testing - Some basic unit testing added.
 
 ### API List:
 ##### Authentication Module
