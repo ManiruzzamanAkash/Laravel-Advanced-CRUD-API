@@ -2,8 +2,7 @@
 
 namespace App\Http\Requests;
 
-use App\Repositories\ResponseRepository;
-use Illuminate\Http\JsonResponse;
+use App\Traits\ResponseTrait;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Http\Exceptions\HttpResponseException;
@@ -11,6 +10,11 @@ use Illuminate\Foundation\Http\FormRequest as LaravelFormRequest;
 
 abstract class FormRequest extends LaravelFormRequest
 {
+    /**
+     * Response trait to handle return responses.
+     */
+    use ResponseTrait;
+
     /**
      * Get the validation rules that apply to the request.
      *
@@ -38,7 +42,7 @@ abstract class FormRequest extends LaravelFormRequest
         $errors = (new ValidationException($validator))->errors();
 
         throw new HttpResponseException(
-            ResponseRepository::ResponseError($errors)
+            $this->responseError($errors)
         );
     }
 }

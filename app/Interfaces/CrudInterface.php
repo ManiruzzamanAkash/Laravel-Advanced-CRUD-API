@@ -1,7 +1,9 @@
 <?php
+
 namespace App\Interfaces;
 
-interface CrudInterface {
+interface CrudInterface
+{
     /**
      * Get All Data
      *
@@ -48,5 +50,5 @@ interface CrudInterface {
      * @param array $data
      * @return object Updated Product Information
      */
-    public function update($id,array $data);
+    public function update($id, array $data);
 }
