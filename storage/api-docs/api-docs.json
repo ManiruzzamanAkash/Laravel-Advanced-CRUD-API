@@ -7,7 +7,7 @@
             "email": "manirujjamanakash@gmail.com"
         },
         "license": {
-            "name": "@ManiruzzamanAkash",
+            "name": "GPL2",
             "url": "https://devsenv.com"
         },
         "version": "1.0.0"
@@ -20,7 +20,7 @@
                 ],
                 "summary": "Login",
                 "description": "Login",
-                "operationId": "App\\Http\\Controllers\\Auth\\AuthController::login",
+                "operationId": "535ffeda4b78916efd658b2844ea897a",
                 "requestBody": {
                     "content": {
                         "application/json": {
@@ -60,7 +60,7 @@
                 ],
                 "summary": "Register User",
                 "description": "Register New User",
-                "operationId": "App\\Http\\Controllers\\Auth\\AuthController::register",
+                "operationId": "da8643013c2941f5ed7f8a9c9b4a7f7a",
                 "requestBody": {
                     "content": {
                         "application/json": {
@@ -108,7 +108,7 @@
                 ],
                 "summary": "Authenticated User Profile",
                 "description": "Authenticated User Profile",
-                "operationId": "App\\Http\\Controllers\\Auth\\AuthController::me",
+                "operationId": "1537d2a532022d0974e4cd2d83c6a38f",
                 "responses": {
                     "200": {
                         "description": "Authenticated User Profile"
@@ -129,7 +129,7 @@
                 ],
                 "summary": "Logout",
                 "description": "Logout",
-                "operationId": "App\\Http\\Controllers\\Auth\\AuthController::logout",
+                "operationId": "46f8a14c8083abb69eed72768aa08629",
                 "responses": {
                     "200": {
                         "description": "Logout"
@@ -150,7 +150,7 @@
                 ],
                 "summary": "Refresh",
                 "description": "Refresh",
-                "operationId": "App\\Http\\Controllers\\Auth\\AuthController::refresh",
+                "operationId": "f3538b6e9c46bcf601a9d194288b03d4",
                 "responses": {
                     "200": {
                         "description": "Refresh"
@@ -422,16 +422,6 @@
                     }
                 }
             }
-        },
-        "/": {
-            "get": {
-                "description": "Home page",
-                "responses": {
-                    "default": {
-                        "description": "Welcome page"
-                    }
-                }
-            }
         }
     },
     "components": {
@@ -439,11 +429,6 @@
             "Bearer": {
                 "type": "apiKey",
                 "description": "JWT",
-                "name": "Authorization",
-                "in": "header"
-            },
-            "api_key": {
-                "type": "apiKey",
                 "name": "Authorization",
                 "in": "header"
             }
