@@ -17,7 +17,7 @@ class ProductRepository implements CrudInterface
      *
      * @var User
      */
-    public User $user;
+    public User | null $user;
 
     /**
      * Constructor.
