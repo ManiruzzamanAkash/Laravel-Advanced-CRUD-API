@@ -75,6 +75,10 @@
                             class="btn btn-info">
                             <i class="fab fa-github"></i> Read Github
                         </a>
+                        <a href="https://www.getpostman.com/collections/5642915d135f376b84af" target="_blank"
+                            class="btn btn-warning">
+                            <i class="fab fa-file"></i> Postman
+                        </a>
                     </p>
                 </div>
             </div>
