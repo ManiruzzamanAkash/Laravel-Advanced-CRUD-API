@@ -10,6 +10,21 @@ use App\Repositories\ProductRepository;
 use App\Repositories\ResponseRepository;
 use Illuminate\Http\Response;
 
+/**
+ * @OA\Info(
+ *     description="API Documentation - Basic CRUD Laravel",
+ *     version="1.0.0",
+ *     title="Basic CRUD Laravel API Documentation",
+ *     @OA\Contact(
+ *         email="manirujjamanakash@gmail.com"
+ *     ),
+ *     @OA\License(
+ *         name="GPL2",
+ *         url="https://devsenv.com"
+ *     )
+ * )
+ */
+
 class ProductsController extends Controller
 {
     public $productRepository;
@@ -44,16 +59,15 @@ class ProductsController extends Controller
         }
     }
 
-    
     /**
      * @OA\GET(
      *     path="/api/products/view/all",
      *     tags={"Products"},
-     *     summary="All Products - Publicly Accessable",
-     *     description="All Products - Publicly Accessable",
+     *     summary="All Products - Publicly Accessible",
+     *     description="All Products - Publicly Accessible",
      *     operationId="indexAll",
      *     @OA\Parameter(name="perPage", description="perPage, eg; 20", example=20, in="query", @OA\Schema(type="integer")),
-     *     @OA\Response(response=200, description="All Products - Publicly Accessable" ),
+     *     @OA\Response(response=200, description="All Products - Publicly Accessible" ),
      *     @OA\Response(response=400, description="Bad request"),
      *     @OA\Response(response=404, description="Resource Not Found"),
      * )
@@ -67,17 +81,17 @@ class ProductsController extends Controller
             return $this->responseRepository->ResponseError(null, $e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
-    
+
     /**
      * @OA\GET(
      *     path="/api/products/view/search",
      *     tags={"Products"},
-     *     summary="All Products - Publicly Accessable",
-     *     description="All Products - Publicly Accessable",
+     *     summary="All Products - Publicly Accessible",
+     *     description="All Products - Publicly Accessible",
      *     operationId="search",
      *     @OA\Parameter(name="perPage", description="perPage, eg; 20", example=20, in="query", @OA\Schema(type="integer")),
      *     @OA\Parameter(name="search", description="search, eg; Test", example="Test", in="query", @OA\Schema(type="string")),
-     *     @OA\Response(response=200, description="All Products - Publicly Accessable" ),
+     *     @OA\Response(response=200, description="All Products - Publicly Accessible" ),
      *     @OA\Response(response=400, description="Bad request"),
      *     @OA\Response(response=404, description="Resource Not Found"),
      * )
@@ -141,7 +155,7 @@ class ProductsController extends Controller
     {
         try {
             $data = $this->productRepository->getByID($id);
-            if(is_null($data))
+            if (is_null($data))
                 return $this->responseRepository->ResponseError(null, 'Product Not Found', Response::HTTP_NOT_FOUND);
 
             return $this->responseRepository->ResponseSuccess($data, 'Product Details Fetch Successfully !');
@@ -176,7 +190,7 @@ class ProductsController extends Controller
     {
         try {
             $data = $this->productRepository->update($id, $request->all());
-            if(is_null($data))
+            if (is_null($data))
                 return $this->responseRepository->ResponseError(null, 'Product Not Found', Response::HTTP_NOT_FOUND);
 
             return $this->responseRepository->ResponseSuccess($data, 'Product Updated Successfully !');
@@ -201,12 +215,13 @@ class ProductsController extends Controller
     public function destroy($id)
     {
         try {
-            $produtData =  $this->productRepository->getByID($id);
+            $product =  $this->productRepository->getByID($id);
             $deleted = $this->productRepository->delete($id);
-            if(!$deleted)
+            if (!$deleted) {
                 return $this->responseRepository->ResponseError(null, 'Product Not Found', Response::HTTP_NOT_FOUND);
+            }
 
-            return $this->responseRepository->ResponseSuccess($produtData, 'Product Deleted Successfully !');
+            return $this->responseRepository->ResponseSuccess($product, 'Product Deleted Successfully !');
         } catch (\Exception $e) {
             return $this->responseRepository->ResponseError(null, $e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
         }

@@ -4,10 +4,14 @@ Basic Laravel CRUD API application included with Authentication Module & Product
 ----
 
 ### Language & Framework Used:
-1. PHP
-1. Laravel
+1. PHP-8
+1. Laravel-9
+
+### Older Versions (if Needed):
+1. Laravel 8.x - https://github.com/ManiruzzamanAkash/Laravel-Advanced-CRUD-API/releases/tag/vLaravel8.x
 
 ### Architecture Used:
+1. Laravel 9.x
 1. Interface-Repository Pattern
 1. Model Based Eloquent Query
 1. Swagger API Documentation - https://github.com/DarkaOnLine/L5-Swagger
@@ -35,7 +39,7 @@ Basic Laravel CRUD API application included with Authentication Module & Product
 ```bash
 git clone https://github.com/ManiruzzamanAkash/Laravel-Basic-CRUD-API.git
 ```
-2. Go to the project drectory by `cd Laravel-Basic-CRUD-API` & Run the 
+1. Go to the project drectory by `cd Laravel-Basic-CRUD-API` & Run the
 2. Create `.env` file & Copy `.env.example` file to `.env` file
 3. Create a database called - `laravel_basic_crud`.
 4. Now migrate and seed database to complete whole project setup by running this-
@@ -43,14 +47,18 @@ git clone https://github.com/ManiruzzamanAkash/Laravel-Basic-CRUD-API.git
 php artisan migrate:refresh --seed
 ```
 It will create `21` Users and `103` Dummy Products.
-5. Run the server - 
+5. Generate Swagger API
+``` bash
+php artisan l5-swagger:generate
+```
+6. Run the server -
 ``` bash
 php artisan serve
 ```
-6. Open Browser - 
+7. Open Browser -
 http://127.0.0.1:8000 & go to API Documentation -
 http://127.0.0.1:8000/api/documentation
-7. You'll see a Swagger Panel.
+8. You'll see a Swagger Panel.
 
 
 ### Procedure
