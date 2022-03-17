@@ -7,7 +7,8 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\ProductRequest;
 
 use App\Repositories\ProductRepository;
-use App\Repositories\ResponseRepository;
+use App\Traits\ResponseTrait;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
 
 /**
@@ -27,14 +28,22 @@ use Illuminate\Http\Response;
 
 class ProductsController extends Controller
 {
-    public $productRepository;
-    public $responseRepository;
+    /**
+     * Response trait to handle return responses.
+     */
+    use ResponseTrait;
 
-    public function __construct(ProductRepository $productRepository, ResponseRepository $rp)
+    /**
+     * Product Repository class.
+     *
+     * @var ProductRepository
+     */
+    public $productRepository;
+
+    public function __construct(ProductRepository $productRepository)
     {
         $this->middleware('auth:api', ['except' => ['indexAll']]);
         $this->productRepository = $productRepository;
-        $this->responseRepository = $rp;
     }
 
     /**
@@ -49,13 +58,13 @@ class ProductsController extends Controller
      *     @OA\Response(response=404, description="Resource Not Found"),
      * )
      */
-    public function index()
+    public function index(): JsonResponse
     {
         try {
             $data = $this->productRepository->getAll();
-            return $this->responseRepository->ResponseSuccess($data, 'Product List Fetch Successfully !');
+            return $this->responseSuccess($data, 'Product List Fetch Successfully !');
         } catch (\Exception $e) {
-            return $this->responseRepository->ResponseError(null, $e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
+            return $this->responseError(null, $e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -72,13 +81,13 @@ class ProductsController extends Controller
      *     @OA\Response(response=404, description="Resource Not Found"),
      * )
      */
-    public function indexAll(Request $request)
+    public function indexAll(Request $request): JsonResponse
     {
         try {
             $data = $this->productRepository->getPaginatedData($request->perPage);
-            return $this->responseRepository->ResponseSuccess($data, 'Product List Fetched Successfully !');
+            return $this->responseSuccess($data, 'Product List Fetched Successfully !');
         } catch (\Exception $e) {
-            return $this->responseRepository->ResponseError(null, $e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
+            return $this->responseError(null, $e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -96,13 +105,13 @@ class ProductsController extends Controller
      *     @OA\Response(response=404, description="Resource Not Found"),
      * )
      */
-    public function search(Request $request)
+    public function search(Request $request): JsonResponse
     {
         try {
             $data = $this->productRepository->searchProduct($request->search, $request->perPage);
-            return $this->responseRepository->ResponseSuccess($data, 'Product List Fetched Successfully !');
+            return $this->responseSuccess($data, 'Product List Fetched Successfully !');
         } catch (\Exception $e) {
-            return $this->responseRepository->ResponseError(null, $e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
+            return $this->responseError(null, $e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -127,14 +136,13 @@ class ProductsController extends Controller
      *      @OA\Response(response=404, description="Resource Not Found"),
      * )
      */
-    public function store(ProductRequest $request)
+    public function store(ProductRequest $request): JsonResponse
     {
         try {
-            $data = $request->all();
-            $unit = $this->productRepository->create($data);
-            return $this->responseRepository->ResponseSuccess($unit, 'New Product Created Successfully !');
+            $product = $this->productRepository->create($request->all());
+            return $this->responseSuccess($product, 'New Product Created Successfully !');
         } catch (\Exception $exception) {
-            return $this->responseRepository->ResponseError(null, $exception->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
+            return $this->responseError(null, $exception->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -151,16 +159,17 @@ class ProductsController extends Controller
      *     @OA\Response(response=404, description="Resource Not Found"),
      * )
      */
-    public function show($id)
+    public function show($id): JsonResponse
     {
         try {
             $data = $this->productRepository->getByID($id);
-            if (is_null($data))
-                return $this->responseRepository->ResponseError(null, 'Product Not Found', Response::HTTP_NOT_FOUND);
+            if (is_null($data)) {
+                return $this->responseError(null, 'Product Not Found', Response::HTTP_NOT_FOUND);
+            }
 
-            return $this->responseRepository->ResponseSuccess($data, 'Product Details Fetch Successfully !');
+            return $this->responseSuccess($data, 'Product Details Fetch Successfully !');
         } catch (\Exception $e) {
-            return $this->responseRepository->ResponseError(null, $e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
+            return $this->responseError(null, $e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -186,16 +195,16 @@ class ProductsController extends Controller
      *     @OA\Response(response=404, description="Resource Not Found"),
      * )
      */
-    public function update(ProductRequest $request, $id)
+    public function update(ProductRequest $request, $id): JsonResponse
     {
         try {
             $data = $this->productRepository->update($id, $request->all());
             if (is_null($data))
-                return $this->responseRepository->ResponseError(null, 'Product Not Found', Response::HTTP_NOT_FOUND);
+                return $this->responseError(null, 'Product Not Found', Response::HTTP_NOT_FOUND);
 
-            return $this->responseRepository->ResponseSuccess($data, 'Product Updated Successfully !');
+            return $this->responseSuccess($data, 'Product Updated Successfully !');
         } catch (\Exception $e) {
-            return $this->responseRepository->ResponseError(null, $e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
+            return $this->responseError(null, $e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -212,18 +221,22 @@ class ProductsController extends Controller
      *     @OA\Response(response=404, description="Resource Not Found"),
      * )
      */
-    public function destroy($id)
+    public function destroy($id): JsonResponse
     {
         try {
             $product =  $this->productRepository->getByID($id);
-            $deleted = $this->productRepository->delete($id);
-            if (!$deleted) {
-                return $this->responseRepository->ResponseError(null, 'Product Not Found', Response::HTTP_NOT_FOUND);
+            if (empty($product)) {
+                return $this->responseError(null, 'Product Not Found', Response::HTTP_NOT_FOUND);
             }
 
-            return $this->responseRepository->ResponseSuccess($product, 'Product Deleted Successfully !');
+            $deleted = $this->productRepository->delete($id);
+            if (!$deleted) {
+                return $this->responseError(null, 'Failed to delete the product.', Response::HTTP_INTERNAL_SERVER_ERROR);
+            }
+
+            return $this->responseSuccess($product, 'Product Deleted Successfully !');
         } catch (\Exception $e) {
-            return $this->responseRepository->ResponseError(null, $e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
+            return $this->responseError(null, $e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 }

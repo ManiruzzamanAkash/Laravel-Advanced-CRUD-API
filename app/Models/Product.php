@@ -8,6 +8,12 @@ use Illuminate\Database\Eloquent\Model;
 class Product extends Model
 {
     use HasFactory;
+
+    /**
+     * Override fillable property data.
+     *
+     * @var array
+     */
     protected $fillable = [
         'title',
         'description',
@@ -16,24 +22,32 @@ class Product extends Model
         'user_id'
     ];
 
-
     /**
      * User
-     * 
+     *
      * Get User Uploaded By Product
      *
-     * @return array Products
+     * @return object
      */
-    public function user()
+    public function user(): object
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class)->select('id', 'name', 'email');
     }
 
     // Add New Attribute to get image address
     protected $appends = ['image_url'];
-    public function  getImageUrlAttribute(){
-        if(is_null($this->image) || $this->image === "")
+
+    /**
+     * Get Added Image Attribute URL.
+     *
+     * @return string|null
+     */
+    public function getImageUrlAttribute(): string | null
+    {
+        if (is_null($this->image) || $this->image === "") {
             return null;
-        return url('')."/images/products/".$this->image;
+        }
+
+        return url('') . "/images/products/" . $this->image;
     }
 }
