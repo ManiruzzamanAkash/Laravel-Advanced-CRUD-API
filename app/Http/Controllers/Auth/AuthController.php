@@ -2,19 +2,27 @@
 
 namespace App\Http\Controllers\Auth;
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterRequest;
-use App\Models\User;
 use App\Repositories\AuthRepository;
-use App\Repositories\ResponseRepository;
+use App\Traits\ResponseTrait;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
 
 class AuthController extends Controller
 {
-    public $responseRepository;
+    /**
+     * Response trait to handle return responses.
+     */
+    use ResponseTrait;
+
+    /**
+     * Auth related functionalities.
+     *
+     * @var AuthRepository
+     */
     public $authRepository;
 
     /**
@@ -22,10 +30,9 @@ class AuthController extends Controller
      *
      * @return void
      */
-    public function __construct( ResponseRepository $rr, AuthRepository $ar)
+    public function __construct(AuthRepository $ar)
     {
         $this->middleware('auth:api', ['except' => ['login', 'register']]);
-        $this->responseRepository = $rr;
         $this->authRepository = $ar;
     }
 
@@ -50,20 +57,20 @@ class AuthController extends Controller
      *   securityScheme="Bearer",type="apiKey",description="JWT",name="Authorization",in="header",
      * )
      */
-    public function login(LoginRequest $request)
+    public function login(LoginRequest $request): JsonResponse
     {
         try {
             $credentials = $request->only('email', 'password');
 
             if ($token = $this->guard()->attempt($credentials)) {
                 $data =  $this->respondWithToken($token);
-            }else{
-                return $this->responseRepository->ResponseError(null, 'Invalid Email and Password !', Response::HTTP_UNAUTHORIZED);
+            } else {
+                return $this->responseError(null, 'Invalid Email and Password !', Response::HTTP_UNAUTHORIZED);
             }
 
-            return $this->responseRepository->ResponseSuccess($data, 'Logged In Successfully !');
+            return $this->responseSuccess($data, 'Logged In Successfully !');
         } catch (\Exception $e) {
-            return $this->responseRepository->ResponseError(null, $e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
+            return $this->responseError(null, $e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -87,19 +94,19 @@ class AuthController extends Controller
      *      @OA\Response(response=404, description="Resource Not Found")
      * )
      */
-    public function register(RegisterRequest $request)
+    public function register(RegisterRequest $request): JsonResponse
     {
         try {
             $requestData = $request->only('name', 'email', 'password', 'password_confirmation');
             $user = $this->authRepository->register($requestData);
-            if($user){
+            if ($user) {
                 if ($token = $this->guard()->attempt($requestData)) {
                     $data =  $this->respondWithToken($token);
-                    return $this->responseRepository->ResponseSuccess($data, 'User Registered and Logged in Successfully', Response::HTTP_OK);
+                    return $this->responseSuccess($data, 'User Registered and Logged in Successfully', Response::HTTP_OK);
                 }
             }
         } catch (\Exception $e) {
-            return $this->responseRepository->ResponseError(null, $e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
+            return $this->responseError(null, $e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -114,13 +121,13 @@ class AuthController extends Controller
      *     @OA\Response(response=404, description="Resource Not Found"),
      * )
      */
-    public function me()
+    public function me(): JsonResponse
     {
         try {
             $data = $this->guard()->user();
-            return $this->responseRepository->ResponseSuccess($data, 'Profile Fetched Successfully !');
+            return $this->responseSuccess($data, 'Profile Fetched Successfully !');
         } catch (\Exception $e) {
-            return $this->responseRepository->ResponseError(null, $e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
+            return $this->responseError(null, $e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -135,13 +142,13 @@ class AuthController extends Controller
      *     @OA\Response(response=404, description="Resource Not Found"),
      * )
      */
-    public function logout()
+    public function logout(): JsonResponse
     {
         try {
             $this->guard()->logout();
-            return $this->responseRepository->ResponseSuccess(null, 'Logged out successfully !');
+            return $this->responseSuccess(null, 'Logged out successfully !');
         } catch (\Exception $e) {
-            return $this->responseRepository->ResponseError(null, $e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
+            return $this->responseError(null, $e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -156,13 +163,13 @@ class AuthController extends Controller
      *     @OA\Response(response=404, description="Resource Not Found"),
      * )
      */
-    public function refresh()
+    public function refresh(): JsonResponse
     {
         try {
             $data = $this->respondWithToken($this->guard()->refresh());
-        return $this->responseRepository->ResponseSuccess($data, 'Token Refreshed Successfully !');
+            return $this->responseSuccess($data, 'Token Refreshed Successfully !');
         } catch (\Exception $e) {
-            return $this->responseRepository->ResponseError(null, $e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
+            return $this->responseError(null, $e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -173,7 +180,7 @@ class AuthController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    protected function respondWithToken($token)
+    protected function respondWithToken($token): array
     {
         $data = [[
             'access_token' => $token,
@@ -189,7 +196,7 @@ class AuthController extends Controller
      *
      * @return \Illuminate\Contracts\Auth\Guard
      */
-    public function guard()
+    public function guard(): \Illuminate\Contracts\Auth\Guard|\Illuminate\Contracts\Auth\StatefulGuard
     {
         return Auth::guard();
     }
