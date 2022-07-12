@@ -28,7 +28,7 @@
                                 "properties": {
                                     "email": {
                                         "type": "string",
-                                        "example": "manirujjamanakash@gmail.com"
+                                        "example": "admin@example.com"
                                     },
                                     "password": {
                                         "type": "string",
