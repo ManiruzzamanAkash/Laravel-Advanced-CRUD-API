@@ -236,8 +236,8 @@
                 "tags": [
                     "Products"
                 ],
-                "summary": "All Products - Publicly Accessable",
-                "description": "All Products - Publicly Accessable",
+                "summary": "All Products - Publicly Accessible",
+                "description": "All Products - Publicly Accessible",
                 "operationId": "indexAll",
                 "parameters": [
                     {
@@ -252,7 +252,7 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "All Products - Publicly Accessable"
+                        "description": "All Products - Publicly Accessible"
                     },
                     "400": {
                         "description": "Bad request"
@@ -268,8 +268,8 @@
                 "tags": [
                     "Products"
                 ],
-                "summary": "All Products - Publicly Accessable",
-                "description": "All Products - Publicly Accessable",
+                "summary": "All Products - Publicly Accessible",
+                "description": "All Products - Publicly Accessible",
                 "operationId": "search",
                 "parameters": [
                     {
@@ -293,7 +293,7 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "All Products - Publicly Accessable"
+                        "description": "All Products - Publicly Accessible"
                     },
                     "400": {
                         "description": "Bad request"
@@ -433,8 +433,5 @@
                 "in": "header"
             }
         }
-    },
-    "security": [
-        []
-    ]
+    }
 }
