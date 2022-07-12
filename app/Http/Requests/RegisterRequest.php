@@ -10,11 +10,11 @@ class RegisterRequest extends FormRequest
      *
      * @return array
      */
-    public function rules()
+    public function rules(): array
     {
         return [
-            'name' => 'required|string|max:50',
-            'email' => 'required|max:255|email|unique:users',
+            'name'     => 'required|string|max:50',
+            'email'    => 'required|max:255|email|unique:users',
             'password' => 'required|confirmed',
         ];
     }
@@ -36,10 +36,10 @@ class RegisterRequest extends FormRequest
     public function messages()
     {
         return [
-            'name.required' => 'Please give your name',
-            'name.max' => 'Please give your name between 50 characters',
-            'email.required' => 'Please give your email',
-            'email.unique' => 'User already exists by this email, please try with another email.',
+            'name.required'     => 'Please give your name',
+            'name.max'          => 'Please give your name between 50 characters',
+            'email.required'    => 'Please give your email',
+            'email.unique'      => 'User already exists by this email, please try with another email.',
             'password.required' => 'Please give your password',
         ];
     }

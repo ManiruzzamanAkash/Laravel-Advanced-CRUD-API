@@ -10,11 +10,11 @@ class LoginRequest extends FormRequest
      *
      * @return array
      */
-    public function rules()
+    public function rules(): array
     {
         return [
-            'email' => 'required',
-            'password' => 'required',
+            'email'    => 'required',
+            'password' => 'required|min:6',
         ];
     }
 
@@ -23,19 +23,20 @@ class LoginRequest extends FormRequest
      *
      * @return bool
      */
-    public function authorize()
+    public function authorize(): bool
     {
         return true;
     }
 
     /**
-     * @return array
      * Custom validation message
+     *
+     * @return array
      */
-    public function messages()
+    public function messages(): array
     {
         return [
-            'email.required' => 'Please give your email',
+            'email.required'    => 'Please give your email',
             'password.required' => 'Please give your password',
         ];
     }

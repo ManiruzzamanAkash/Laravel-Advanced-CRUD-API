@@ -2,7 +2,6 @@
 
 namespace App\Http\Requests;
 
-
 class ProductRequest extends FormRequest
 {
     /**
@@ -10,13 +9,13 @@ class ProductRequest extends FormRequest
      *
      * @return array
      */
-    public function rules()
+    public function rules(): array
     {
         return [
-            'title' => 'required|max:255',
+            'title'       => 'required|max:255',
             'description' => 'nullable|max:5000',
-            'price' => 'required|numeric',
-            'image' => 'nullable|image|mimes:png,jpg,jpeg,gif,webp|max:2048',
+            'price'       => 'required|numeric',
+            'image'       => 'nullable|image|mimes:png,jpg,jpeg,gif,webp|max:2048',
         ];
     }
 
@@ -25,7 +24,7 @@ class ProductRequest extends FormRequest
      *
      * @return bool
      */
-    public function authorize()
+    public function authorize(): bool
     {
         return true;
     }
@@ -34,16 +33,16 @@ class ProductRequest extends FormRequest
      * @return array
      * Custom validation message
      */
-    public function messages()
+    public function messages(): array
     {
         return [
-            'title.required' => 'Please give product title',
-            'title.max' => 'Please give product title maximum of 255 characters',
+            'title.required'  => 'Please give product title',
+            'title.max'       => 'Please give product title maximum of 255 characters',
             'description.max' => 'Please give product description maximum of 5000 characters',
-            'price.required' => 'Please give product price',
-            'price.numeric' => 'Please give a numeric product price',
-            'image.image' => 'Please give a valid product image',
-            'image.max' => 'Product image max 2MB is allowed',
+            'price.required'  => 'Please give product price',
+            'price.numeric'   => 'Please give a numeric product price',
+            'image.image'     => 'Please give a valid product image',
+            'image.max'       => 'Product image max 2MB is allowed',
         ];
     }
 }
