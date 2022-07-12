@@ -3,11 +3,11 @@
 namespace App\Http\Controllers\Welcome;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use Illuminate\Contracts\Support\Renderable;
 
 class WelcomeController extends Controller
 {
-    public function welcome()
+    public function welcome(): Renderable
     {
         return view('welcome');
     }
