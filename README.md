@@ -43,23 +43,24 @@ git clone https://github.com/ManiruzzamanAkash/Laravel-Basic-CRUD-API.git
 1. Go to the project drectory by `cd Laravel-Basic-CRUD-API` & Run the
 2. Create `.env` file & Copy `.env.example` file to `.env` file
 3. Create a database called - `laravel_basic_crud`.
-4. Now migrate and seed database to complete whole project setup by running this-
+4. Install composer packages - `composer install`.
+5. Now migrate and seed database to complete whole project setup by running this-
 ``` bash
 php artisan migrate:refresh --seed
 ```
 It will create `21` Users and `103` Dummy Products.
-5. Generate Swagger API
+6. Generate Swagger API
 ``` bash
 php artisan l5-swagger:generate
 ```
-6. Run the server -
+7. Run the server -
 ``` bash
 php artisan serve
 ```
-7. Open Browser -
+8. Open Browser -
 http://127.0.0.1:8000 & go to API Documentation -
 http://127.0.0.1:8000/api/documentation
-8. You'll see a Swagger Panel.
+9. You'll see a Swagger Panel.
 
 
 ### Procedure
@@ -68,7 +69,7 @@ http://127.0.0.1:8000/api/documentation
 1. Hit Any API, You can also hit any API, before authorization header data set to see the effects.
 
 
-### Demo 
+### Demo
 
 ###### API List Views:
 <img src="https://i.ibb.co/gV1Yn9Z/1-Swagger-API-Demo.png" alt="1-Swagger-API-Demo" border="0">
