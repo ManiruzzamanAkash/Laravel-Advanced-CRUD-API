@@ -96,7 +96,7 @@ class ProductRepository implements CrudInterface
      * @param int $id
      * @return boolean true if deleted otherwise false
      */
-    public function delete($id): bool
+    public function delete(int $id): bool
     {
         $product = Product::find($id);
         if (empty($product)) {
@@ -114,7 +114,7 @@ class ProductRepository implements CrudInterface
      * @param int $id
      * @return void
      */
-    public function getByID($id): Product|null
+    public function getByID(int $id): Product|null
     {
         return Product::with('user')->find($id);
     }
@@ -126,7 +126,7 @@ class ProductRepository implements CrudInterface
      * @param array $data
      * @return object Updated Product Object
      */
-    public function update($id, array $data): Product|null
+    public function update(int $id, array $data): Product|null
     {
         $product = Product::find($id);
         if (!empty($data['image'])) {

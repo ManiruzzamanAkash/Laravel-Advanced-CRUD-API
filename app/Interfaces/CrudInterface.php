@@ -33,7 +33,7 @@ interface CrudInterface
      * @param int $id
      * @return object Deleted Product
      */
-    public function delete($id);
+    public function delete(int $id);
 
     /**
      * Get Item Details By ID
@@ -41,7 +41,7 @@ interface CrudInterface
      * @param int $id
      * @return object Get Product
      */
-    public function getByID($id);
+    public function getByID(int $id);
 
     /**
      * Update Product By Id and Data
@@ -50,5 +50,5 @@ interface CrudInterface
      * @param array $data
      * @return object Updated Product Information
      */
-    public function update($id, array $data);
+    public function update(int $id, array $data);
 }
