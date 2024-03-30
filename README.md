@@ -4,14 +4,15 @@ Basic Laravel CRUD API application included with Authentication Module & Product
 ----
 
 ### Language & Framework Used:
-1. PHP-8
-1. Laravel-9
+1. PHP >= 8.2
+1. Laravel 11.x
 
 ### Older Versions (if Needed):
 1. Laravel 8.x - https://github.com/ManiruzzamanAkash/Laravel-Advanced-CRUD-API/releases/tag/vLaravel8.x
+1. Laravel 9.x - https://github.com/ManiruzzamanAkash/Laravel-Advanced-CRUD-API/releases/tag/vLaravel9.2
 
 ### Architecture Used:
-1. Laravel 9.x
+1. Laravel 11.x
 1. Interface-Repository Pattern
 1. Model Based Eloquent Query
 1. Swagger API Documentation - https://github.com/DarkaOnLine/L5-Swagger
@@ -49,11 +50,8 @@ git clone https://github.com/ManiruzzamanAkash/Laravel-Basic-CRUD-API.git
 php artisan migrate:refresh --seed
 ```
 It will create `21` Users and `103` Dummy Products.
-6. Generate Swagger API
-``` bash
-php artisan l5-swagger:generate
-```
-7. Run the server -
+
+6. Run the server -
 ``` bash
 php artisan serve
 ```
@@ -92,8 +90,6 @@ http://127.0.0.1:8000/api/documentation
 
 ###### Image Upload throw Postman:
 <img src="https://i.ibb.co/VBkMBBp/Postman-Store-Product-with-File-Upload.png" alt="Postman-Store-Product-with-File-Upload" border="0">
-
-
 
 ### Test
 1. Test with Postman - https://www.getpostman.com/collections/5642915d135f376b84af [Click to open with post man]
